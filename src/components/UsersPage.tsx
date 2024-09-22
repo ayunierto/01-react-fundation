@@ -1,37 +1,29 @@
-import axios from "axios";
-import { useEffect } from "react";
+import { useUser } from "../hooks";
+import { UserRow } from ".";
 
 export const UsersPage = () => {
-  useEffect(() => {
-    axios
-      .get("https://reqres.in/api/users?page=2")
-      .then((res) => console.log(res.data));
-    // fetch("https://reqres.in/api/users?page=2")
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data));
-  });
-
+  const { nextPage, prevPage, users } = useUser();
   return (
     <>
       <h3>Users</h3>
       <table>
         <thead>
           <tr>
-            <th>Avatar</th>
+            <th>avatar</th>
             <th>name</th>
             <th>email</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>avatar</td>
-            <td>name</td>
-            <td>email</td>
-          </tr>
+          {users.map((user) => (
+            <UserRow key={user.id} user={user} />
+          ))}
         </tbody>
       </table>
+      <div>
+        <button onClick={prevPage}>Prev</button>
+        <button onClick={nextPage}>Next</button>
+      </div>
     </>
   );
 };
-
-export default UsersPage;
